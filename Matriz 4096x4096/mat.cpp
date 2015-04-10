@@ -1,7 +1,7 @@
 #define N 4096
 #include <iostream>
+#include <time.h>
 using namespace std;
-
 long matrizIJ()
 {
 	int **mat;
@@ -80,6 +80,27 @@ long matrizJI()
 	return soma;
 }
 
+long vetor()
+{
+	int *vet;
+	int i;
+	int n = 0;
+	long soma = 0;
+	vet = new int [N * N];
+	if(vet==NULL)
+	{
+		cout << "Error" << endl;
+		return -1;
+	}
+	for(i=0;i<N*N;i++)
+	{
+		vet[i] = n;
+		soma += vet[i];
+		n++;
+	}
+	delete[] vet;
+	return soma;
+}
 int main(  int argc, char *argv[] )
 {
         double timeResult = 0.0;
@@ -98,6 +119,13 @@ int main(  int argc, char *argv[] )
 	endTime = clock();
 	timeResult = (endTime/CLOCKS_PER_SEC) - (startTime/CLOCKS_PER_SEC);
 	cout << "Soma coluna/linha\nResultado: " << funcResult << "\nTempo: " << timeResult << endl;
+
+	startTime = clock();
+	funcResult = vetor();
+	endTime = clock();
+	timeResult = (endTime/CLOCKS_PER_SEC) - (startTime/CLOCKS_PER_SEC);
+	cout << "Soma vetor\nResultado: " << funcResult << "\nTempo: " << timeResult << endl;
+
 	return 0;
 }
 
