@@ -5,7 +5,6 @@
 #include <QtGui>
 #include <QFileDialog>
 #include <QMessageBox>
-#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -84,7 +83,6 @@ void MainWindow::makeHist()
         {
             x[i] = i;
             y[i] = grayScale[i];
-            std::cout<<x[i]<<" quantidade: "<<y[i]<<std::endl;
         }
         ui->customPlot->addGraph();
         ui->customPlot->QCustomPlot::setInteractions(QCP::iRangeZoom);
