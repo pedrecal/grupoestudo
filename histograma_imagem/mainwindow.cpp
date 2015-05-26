@@ -22,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->customPlot->xAxis->setLabel("Tom");
     ui->customPlot->yAxis->setLabel("Quantidade");
+    ui->customPlot->xAxis->setRange(0, 255);
+    ui->customPlot->yAxis->setRange(0, 1000);
 
     isImage = false;
 
@@ -85,6 +87,8 @@ void MainWindow::makeHist()
             std::cout<<x[i]<<" quantidade: "<<y[i]<<std::endl;
         }
         ui->customPlot->addGraph();
+        ui->customPlot->QCustomPlot::setInteractions(QCP::iRangeZoom);
+        ui->customPlot->setInteraction(QCP::iRangeDrag, true);
         ui->customPlot->graph(0)->setData(x, y);
         ui->customPlot->replot();
     }

@@ -69,25 +69,9 @@
       <height>151</height>
      </rect>
     </property>
-    <widget class="QLabel" name="lbBlinkHey">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>251</width>
-       <height>151</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap>../../../Pictures/azul.jpg</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QWidget" name="widBlinkDj" native="true">
     <property name="geometry">
@@ -98,25 +82,9 @@
       <height>151</height>
      </rect>
     </property>
-    <widget class="QLabel" name="lbBlinkDj">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>251</width>
-       <height>151</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap>../../../Pictures/vermelho.jpg</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

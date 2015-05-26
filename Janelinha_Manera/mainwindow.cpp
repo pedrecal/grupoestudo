@@ -1,7 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <iostream>
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -16,11 +14,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushClear_clicked()
 {
-    ui->lbPrint->setText(QString(""));
+    ui->lbPrint->clear();
 }
 
 
 void MainWindow::on_pushOk_clicked()
 {
-    ui->lbPrint->setText(ui->textEnter->toPlainText());
+    ui->lbPrint->setText(ui->textEnter->text());
+    ui->textEnter->clear();
 }
