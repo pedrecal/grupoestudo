@@ -20,11 +20,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->customplot->xAxis->setLabel("Quantity");
     ui->customplot->yAxis->setLabel("Color Grade");
+    ui->customplot->xAxis->setRange(0, 300);
+    ui->customplot->yAxis->setRange(0, 10000);
 
 }
 
 MainWindow::~MainWindow()
 {
+    delete Img;
     delete ui;
 }
 
@@ -42,8 +45,8 @@ void MainWindow::on_pushButton_clicked()
             return;
         }
 
-        Img -> setPixmap(QPixmap::fromImage(image));
-        Img -> adjustSize();
+        Img->setPixmap(QPixmap::fromImage(image));
+        Img->adjustSize();
     }
 }
 
@@ -52,21 +55,21 @@ void MainWindow::on_pushButton_2_clicked()
     int grayScale[255] = {0}; // Shades of gray
 
     QImage tmpImg = Img->pixmap()->toImage();
-    QColor tmpColor;
-    int grayColor = 0;
-
-    if ( tmpImg.isGrayscale() )
+    QColor tempColor;
+    int grayColor;
+    if(tmpImg.isGrayscale())
     {
-        for ( int i = 0; i < tmpImg.width(); i++)
+        for(int i = 0; i < tmpImg.width(); i++)
         {
-            for ( int j = 0; j < tmpImg.height(); i++)
+            for(int j = 0; j < tmpImg.height(); j++)
             {
-                tmpColor = tmpImg.pixel(i, j);
-                grayColor = ( 255 - tmpColor.black() );
+                tempColor = tmpImg.pixel(i, j);
+                grayColor = (255 - tempColor.black());
                 grayScale[grayColor]++;
             }
         }
     }
+
     QVector<double> x(255),y(255);
     for(int i = 0; i < 255; i++)
     {
