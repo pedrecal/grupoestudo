@@ -62,7 +62,7 @@ void MainWindow::makeHist()
 {
     if(isImage)
     {
-        int grayScale[255] = {0};
+        int grayScale[256] = {0};
         QImage image = imgEnter->pixmap()->toImage();
         QColor tempColor;
         int grayColor;
@@ -78,8 +78,8 @@ void MainWindow::makeHist()
                 }
             }
         }
-        QVector<double> x(255),y(255);
-        for(int i = 0; i < 255; i++)
+        QVector<double> x(256),y(256);
+        for(int i = 0; i <= 255; i++)
         {
             x[i] = i;
             y[i] = grayScale[i];
