@@ -1,7 +1,9 @@
 #include "carregaimage.h"
 
-carregaImage::carregaImage()
+carregaImage::carregaImage(QWidget *parent) :
+    QWidget(parent)
 {
+
 
     image = new QLabel;
     image->setBackgroundRole( QPalette::Base );
@@ -11,10 +13,10 @@ carregaImage::carregaImage()
     isImage = false;
 
 }
-carregaImage::~carregaImage()
+/*carregaImage::~carregaImagem()
 {
     delete image;
-}
+}*/
 
 void carregaImage::carregar()
 {

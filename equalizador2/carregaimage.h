@@ -1,21 +1,25 @@
 #ifndef CARREGAIMAGE_H
 #define CARREGAIMAGE_H
 
+#include <QWidget>
 #include <QLabel>
-#include <QScrollArea>
 #include <QFileDialog>
 #include <QMessageBox>
-#include "mainwindow.h"
 
-class carregaImage
+class carregaImage : public QWidget
 {
+    Q_OBJECT
 public:
-    carregaImage();
-    ~carregaImage();
-    bool isImage;
+    explicit carregaImage(QWidget *parent = 0);
+
     QLabel *image;
+    bool isImage;
+
+signals:
+
 public slots:
     void carregar();
+
 };
 
 #endif // CARREGAIMAGE_H
