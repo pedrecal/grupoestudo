@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = equalizador2
 TEMPLATE = app
@@ -14,9 +14,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    carregaimage.cpp
+    carregaimage.cpp \
+    qcustomplot.cpp \
+    brilho.cpp
 
 HEADERS  += mainwindow.h \
-    carregaimage.h
+    carregaimage.h \
+    qcustomplot.h \
+    brilho.h
 
 FORMS    += mainwindow.ui
