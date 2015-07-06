@@ -21,6 +21,9 @@ public:
     brilho *bright;
     int light;
     int shadow;
+    void getScale();
+    void cleanScale();
+    int *grayScale;
 private:
     Ui::MainWindow *ui;
 public slots:

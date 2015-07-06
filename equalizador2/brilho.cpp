@@ -3,9 +3,10 @@
 brilho::brilho(QWidget *parent) :
     QWidget(parent)
 {
-    grayScale = new int[256];
-    for (int i = 0; i<256; i++)
-        grayScale[i] = 0;
+}
+brilho::~brilho()
+{
+    delete newImage;
 }
 void brilho::appling(bool isImage, int light, int shadow, QLabel *image)
 {
@@ -18,15 +19,14 @@ void brilho::appling(bool isImage, int light, int shadow, QLabel *image)
         QRgb value;
         if(newImage.isGrayscale())
         {
-            for(int i = 0; i < newImage.width(); i++)
+            for(long i = 0; i < newImage.width(); i++)
             {
-                for(int j = 0; j< newImage.height(); j++)
+                for(long j = 0; j< newImage.height(); j++)
                 {
                     tempColor = newImage.pixel(i, j);
                     grayColor = (255 - tempColor.black());
                     grayColor += light;
                     grayColor -= shadow;
-                    grayScale[grayColor]++;
                     value = qRgb(grayColor, grayColor, grayColor);
 
                     newImage.setPixel(i, j, value);

@@ -50,7 +50,7 @@ void MainWindow::makeHist()
     {
         x[i] = i;
         y[i] = grayScale[i];
-
+        
     }
     ui->customPlot->addGraph();
     ui->customPlot->graph(0)->setData(x, y);

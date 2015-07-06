@@ -9,9 +9,9 @@ class brilho : public QWidget
     Q_OBJECT
 public:
     explicit brilho(QWidget *parent = 0);
+    ~brilho();
     QImage *newImage;
     void appling(bool, int, int, QLabel *);
-    int *grayScale;
 signals:
 
 public slots:

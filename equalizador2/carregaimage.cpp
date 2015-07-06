@@ -13,7 +13,10 @@ carregaImage::carregaImage(QWidget *parent) :
     isImage = false;
 
 }
-
+carregaImage::~carregaImage()
+{
+    delete image;
+}
 
 void carregaImage::carregar()
 {

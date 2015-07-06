@@ -11,6 +11,7 @@ class carregaImage : public QWidget
     Q_OBJECT
 public:
     explicit carregaImage(QWidget *parent = 0);
+    ~carregaImage();
     QLabel *image;
     bool isImage;
 
