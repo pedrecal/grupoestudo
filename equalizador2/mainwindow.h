@@ -29,6 +29,7 @@ private:
 public slots:
     void applySets();
     void makeHist();
+    void validacao();
 };
 
 #endif // MAINWINDOW_H

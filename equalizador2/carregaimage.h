@@ -14,7 +14,8 @@ public:
     ~carregaImage();
     QLabel *image;
     bool isImage;
-
+    long sizeImage;
+    long totalGray;
 signals:
 
 public slots:

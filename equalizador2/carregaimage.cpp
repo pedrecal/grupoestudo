@@ -31,6 +31,8 @@ void carregaImage::carregar()
         }
         image->setPixmap(QPixmap::fromImage(tempImage));
         image->adjustSize();
+        sizeImage = tempImage.width() * tempImage.height();
+        totalGray = 0;
         isImage = true;
     }
 }
