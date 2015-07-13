@@ -13,6 +13,7 @@ public:
     explicit carregaImage(QWidget *parent = 0);
     ~carregaImage();
     QLabel *image;
+    QImage *imageQ;
     bool isImage;
     long sizeImage;
     long totalGray;

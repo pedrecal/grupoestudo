@@ -12,10 +12,13 @@ carregaImage::carregaImage(QWidget *parent) :
 
     isImage = false;
 
+    imageQ = new QImage;
+
 }
 carregaImage::~carregaImage()
 {
     delete image;
+    delete imageQ;
 }
 
 void carregaImage::carregar()
@@ -33,6 +36,7 @@ void carregaImage::carregar()
         image->adjustSize();
         sizeImage = tempImage.width() * tempImage.height();
         totalGray = 0;
+        *imageQ = tempImage;
         isImage = true;
     }
 }

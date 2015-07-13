@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QScrollArea>
-#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -14,10 +13,11 @@ MainWindow::MainWindow(QWidget *parent) :
     grayScale = new int[256];
     cleanScale();
 
+    imageCopy = load->imageQ;
+
     ui->btValidacao->hide();
 
     ui->scrollArea->setWidget(load->image);
-
 
     ui->customPlot->xAxis->setLabel("Tom");
     ui->customPlot->yAxis->setLabel("Quantidade");
@@ -26,10 +26,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->customPlot->QCustomPlot::setInteractions(QCP::iRangeZoom);
     ui->customPlot->setInteraction(QCP::iRangeDrag, true);
 
+    connect(ui->sliderLuz, SIGNAL(valueChanged(int)), this, SLOT(valueLuz(int)));
+
+    connect(ui->sliderSombra, SIGNAL(valueChanged(int)), this, SLOT(valueSombra(int)));
 
     connect(ui->btLoad, SIGNAL(released()), load, SLOT(carregar()));
 
-    connect(ui->btApply, SIGNAL(released()), this, SLOT(applySets()));
+    connect(ui->sliderLuz, SIGNAL(valueChanged(int)), this, SLOT(applySets()));
+
+    connect(ui->sliderSombra, SIGNAL(valueChanged(int)), this, SLOT(applySets()));
 
     connect(ui->btMakeHist, SIGNAL(released()), this, SLOT(makeHist()));
 
@@ -47,11 +52,7 @@ MainWindow::~MainWindow()
 void MainWindow::applySets()
 {
     if(load->isImage == true)
-    {
-        light = ui->qtLuz->text().toInt(NULL);
-        shadow = ui->qtSombra->text().toInt(NULL);
-        bright->appling(load->isImage, light, shadow, load->image);
-    }
+        bright->appling(load->isImage, *light, *shadow, load->imageQ, load->image, imageCopy);
 }
 
 void MainWindow::makeHist()
@@ -79,16 +80,15 @@ void MainWindow::makeHist()
 
 void MainWindow::getScale()
 {
-    QImage tempImage = load->image->pixmap()->toImage();
     QColor tempColor;
     int grayColor;
-    if(tempImage.isGrayscale())
+    if(load->imageQ->isGrayscale())
     {
-        for(int i = 0; i < tempImage.width(); i++)
+        for(int i = 0; i < load->imageQ->width(); i++)
         {
-            for(int j = 0; j < tempImage.height(); j++)
+            for(int j = 0; j < load->imageQ->height(); j++)
             {
-                tempColor = tempImage.pixel(i, j);
+                tempColor = load->imageQ->pixel(i, j);
                 grayColor = (255 - tempColor.black());
                 grayScale[grayColor]++;
             }
@@ -104,7 +104,6 @@ void MainWindow::cleanScale()
 
 void MainWindow::validacao()
 {
-    std::cout<<load->sizeImage<<" a "<<load->totalGray<<std::endl;
     if (load->totalGray == load->sizeImage)
     {
         QMessageBox::information(this, tr("Validacao"), tr("O total do histograma e de %1 pixels e a imagem tem %2 pixels. O histograma esta correto").arg(load->totalGray).arg(load->sizeImage));
@@ -116,4 +115,13 @@ void MainWindow::validacao()
         return;
     }
 
+}
+
+void MainWindow::valueLuz(int luz)
+{
+    light = &luz;
+}
+void MainWindow::valueSombra(int sombra)
+{
+    shadow = &sombra;
 }
