@@ -21,6 +21,8 @@ private slots:
 
     void on_pushOk_clicked();
 
+    void on_textEnter_returnPressed();
+
 private:
     Ui::MainWindow *ui;
 };
