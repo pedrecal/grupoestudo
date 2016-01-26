@@ -1,4 +1,4 @@
-//icpc testeLoop.cpp - o testeLoop
+//icpc -openmp testeLoop.cpp - o testeLoop.o -Wall
 
 #include <iostream>
 #include <omp.h>
