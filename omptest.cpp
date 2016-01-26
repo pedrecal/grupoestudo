@@ -29,7 +29,7 @@ int main(int argc, char const *argv[])
 	for(int i = 0; i < numb; i++)//Exec Func and register time
 	{
 		startTime = clock();
-		funcResult = rzfParallel(n, inf);
+		funcResult = rzf(n, inf);
 		endTime = clock();
 		timeResult = (endTime/CLOCKS_PER_SEC) - (startTime/CLOCKS_PER_SEC);
 
@@ -67,7 +67,7 @@ avgTime = 0;
 for(int i = 0; i < numb; i++)//Exec Func and register time
 {
 	startTime = clock();
-	funcResult = rzf(n, inf);
+	funcResult = rzfParallel(n, inf);
 	endTime = clock();
 	timeResult = (endTime/CLOCKS_PER_SEC) - (startTime/CLOCKS_PER_SEC);
 
