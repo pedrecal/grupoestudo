@@ -14,7 +14,7 @@ double rzf()
     int n = 2;
     double sum = 0.0;
     long inf = 1000000;
-    for(int k = 1; k < inf; k++)
+    for(int k = 1; k <= inf; k++)
         sum += 1.0/pow(k, (double) n);
 
     return sum;
@@ -28,10 +28,10 @@ double rzfParallel()
     //        k=1   k^n
     double sum = 0.0;
     int n = 2;
-    long inf = 1000000; //ou 1000000 1000000000
+    long inf = 1000000000; //ou 1000000 1000000000
 
     #pragma omp parallel for reduction(+:sum) num_threads(4)
-        for(int k = 1; k < inf; k++)
+        for(int k = 1; k <= inf; k++)
             sum += 1.0/pow(k, (double) n);
 
     return sum;
@@ -55,7 +55,7 @@ int main(int argc, char const *argv[])
     cout << "\tRiemann zeta function result is: " << sum << endl;
     bestTime = worstTime = avgTime = timeResult;
 
-//#pragma omp parallel for num_threads(8)
+#pragma omp parallel for num_threads(8)
     for(int i = 1; i < 5; i++)
     {
         startTime = clock();
