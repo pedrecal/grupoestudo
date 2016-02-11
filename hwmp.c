@@ -13,7 +13,7 @@ int nthreads, tid;
   printf("Hello World from thread = %d\n", tid);
 
   if (tid == 0)
-    {
+    {h
     nthreads = omp_get_num_threads();
     printf("Number of threads = %d\n", nthreads);
     }
