@@ -11,8 +11,6 @@ void numerosPrimos2();
 int main(int argc, char const *argv[]) {
 
     numerosPrimos();
-    cout << endl;
-    //numerosPrimos2();
 
     return 0;
 }
@@ -34,34 +32,9 @@ void numerosPrimos()
         }
 
         if(flag)
-        {
             cout << " " << i;
-            flag = true;
-        }
-    }
-    cout << endl;
-}
 
-void numerosPrimos2()
-{
-    int infinity = 100;
-    int flag = 0;
-
-    for(int i = 1; i < infinity; i++)
-    {
-        for(int j = 2; j < i; j++)
-        {
-            if(i % j == 0)
-            {
-                flag = 1;
-                break;
-            }
-        }
-        if(!flag)
-        {
-            cout << " " << i;
-        }
-        flag = 0;
+        flag = true;
     }
     cout << endl;
 }
