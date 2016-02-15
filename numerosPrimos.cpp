@@ -13,8 +13,9 @@ int main(int argc, char const *argv[])
 
 void primosParalelo()
 {
-    int infinity = 100000000;
-    int flag = 0;
+    int infinity = 1000;
+    bool flag = false;
+    int qntd = 0;
 
     for(int i = 1; i < infinity; i++)
     {
@@ -22,15 +23,16 @@ void primosParalelo()
         {
             if(i % j == 0)
             {
-                flag = 1;
+                flag = true;
                 break;
             }
         }
         if(!flag)
         {
             cout << " " << i;
+	    qntd++;
         }
-        flag = 0;
+        flag = false;
     }
-    cout << endl;
+    cout << endl << qntd << endl;
 }
