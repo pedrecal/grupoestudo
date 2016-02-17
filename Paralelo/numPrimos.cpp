@@ -13,31 +13,51 @@ int main(int argc, char const *argv[]) {
     int max = 1000000;
     double startTime = 0.0;
     double endTime = 0.0;
-    double tempo1 = 0.0;
-    double tempo2 = 0.0;
-    int funcResult1;
-    int funcResult2;
+    double time1 = 0.0;
+    double time2 = 0.0;
+    double avgTime = 0.0;
+    double worstTime = 0.0;
+    double bestTime = 0.0;
+    int funcResult1 = 0;
+    int funcResult2 = 0;
+    int loopTimes = 5;
 
-<<<<<<< HEAD
-    cout << "------------------------------ Serial ------------------------------" << endl;
-    startTime = (double) clock()/CLOCKS_PER_SEC;
-=======
-    cout << endl << "------------------------------ Serial ------------------------------" << endl;
-    startTime = clock()/CLOCKS_PER_SEC;
->>>>>>> 67d39bc6df6bf41f9d32c596c6dcf3b0dc30dafc
-    funcResult1 = numerosPrimos(max);
-    endTime = (double) clock()/CLOCKS_PER_SEC;
-    tempo1 = endTime - startTime;
+    cout << "------------------------------ Serial ------------------------------";
+    for(int i = 0; i < loopTimes; i++)
+    {
+        startTime = (double) clock()/CLOCKS_PER_SEC;
+        funcResult1 = numerosPrimos(max);
+        endTime = (double) clock()/CLOCKS_PER_SEC;
+        time1 = endTime - startTime;
+        if(i == 0)
+            worstTime = bestTime = time1;
+        else if (bestTime > time1)
+            bestTime = time1;
+        else if(worstTime < time1)
+            worstTime = time1;
+        avgTime += time1;
+        cout << "Loop " << i << ": Total of Cousin Numbers: " << funcResult1 << " --- Time: " << time1;
+    }
 
-    cout << endl << "Total numeros primos: " << funcResult1 << " --- Tempo: "<< tempo1 << endl << endl;
+    cout << "\n\n" << "BestTime: " << bestTime << "\tWorstTime: " << worstTime << "\tAverageTime: " << avgTime/loopTimes << "\n\n";
 
+    avgTime = worstTime = bestTime = 0.0;
     cout << "----------------------------- Parallel -----------------------------" << endl;
-    //startTime = omp_get_wtime();
-    funcResult2 = numerosPrimosParalelo(max, &startTime, &endTime);
-    //endTime = omp_get_wtime();
-    tempo2 = endTime - startTime;
+    for(int i = 0; i < loopTimes; i++)
+    {
+        funcResult2 = numerosPrimosParalelo(max, &startTime, &endTime);
+        time2 = endTime - startTime;
+        if(i == 0)
+            worstTime = bestTime = time2;
+        else if (bestTime > time2)
+            bestTime = time2;
+        else if(worstTime < time2)
+            worstTime = time2;
+        avgTime += time2;
+        cout << "Loop " << i << ": Total  of Cousin Numbers: " << funcResult2 << " --- Time: " << time2 << "\n";
+    }
 
-    cout << endl << "Total numeros primos: " << funcResult2 <<" --- Tempo: "<< tempo2 << endl;
+    cout << "\n" << "BestTime: " << bestTime << "\tWorstTime: " << worstTime << "\tAverageTime: " << avgTime/loopTimes << "\n" << endl;
 
     return 0;
 }
