@@ -7,10 +7,10 @@ using namespace std;
 
 int numerosPrimos(int);
 
-int numerosPrimosParalelo(int);
+int numerosPrimosParalelo(int, double*, double*);
 
 int main(int argc, char const *argv[]) {
-    int max = 100000;
+    int max = 1000000;
     double startTime = 0.0;
     double endTime = 0.0;
     double tempo1 = 0.0;
@@ -27,9 +27,9 @@ int main(int argc, char const *argv[]) {
     cout << endl << "Total numeros primos: " << funcResult1 << " --- Tempo: "<< tempo1 << endl << endl;
 
     cout << "----------------------------- Parallel -----------------------------" << endl;
-    startTime = omp_get_wtime();
-    funcResult2 = numerosPrimosParalelo(max);
-    endTime = omp_get_wtime();
+    //startTime = omp_get_wtime();
+    funcResult2 = numerosPrimosParalelo(max, &startTime, &endTime);
+    //endTime = omp_get_wtime();
     tempo2 = endTime - startTime;
 
     cout << endl << "Total numeros primos: " << funcResult2 <<" --- Tempo: "<< tempo2 << endl;
@@ -67,7 +67,7 @@ int numerosPrimos(int max)
     return numeros;
 }
 
-int numerosPrimosParalelo(int max)
+int numerosPrimosParalelo(int max, double* startTime, double* endTime)
 {
     int NCPU = omp_get_num_procs();
     int tid;
@@ -77,6 +77,8 @@ int numerosPrimosParalelo(int max)
 
     for(int i = 0; i < NCPU; i++)
         numeros[i] = 0;
+
+    *startTime = omp_get_wtime();
 
     #pragma omp parallel for
         for(int i = 1; i < max; i++)
@@ -102,8 +104,12 @@ int numerosPrimosParalelo(int max)
             flag = true;
         }
 
+    *endTime = omp_get_wtime();
+
     for(int i = 0; i < NCPU; i++)
         total += numeros[i];
+
+    delete [] numeros;
 
     return total;
 }
