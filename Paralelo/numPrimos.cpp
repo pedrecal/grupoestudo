@@ -18,7 +18,7 @@ int main(int argc, char const *argv[]) {
     int funcResult1;
     int funcResult2;
 
-    cout << "------------------------------ Serial ------------------------------" << endl;
+    cout << endl << "------------------------------ Serial ------------------------------" << endl;
     startTime = clock()/CLOCKS_PER_SEC;
     funcResult1 = numerosPrimos(max);
     endTime = clock()/CLOCKS_PER_SEC;
