@@ -18,8 +18,13 @@ int main(int argc, char const *argv[]) {
     int funcResult1;
     int funcResult2;
 
+<<<<<<< HEAD
     cout << "------------------------------ Serial ------------------------------" << endl;
     startTime = (double) clock()/CLOCKS_PER_SEC;
+=======
+    cout << endl << "------------------------------ Serial ------------------------------" << endl;
+    startTime = clock()/CLOCKS_PER_SEC;
+>>>>>>> 67d39bc6df6bf41f9d32c596c6dcf3b0dc30dafc
     funcResult1 = numerosPrimos(max);
     endTime = (double) clock()/CLOCKS_PER_SEC;
     tempo1 = endTime - startTime;
