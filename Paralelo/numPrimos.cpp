@@ -10,7 +10,7 @@ int numerosPrimos(int);
 int numerosPrimosParalelo(int);
 
 int main(int argc, char const *argv[]) {
-    int max = 100000000;
+    int max = 100000;
     double startTime = 0.0;
     double endTime = 0.0;
     double tempo1 = 0.0;
@@ -24,7 +24,7 @@ int main(int argc, char const *argv[]) {
     endTime = clock()/CLOCKS_PER_SEC;
     tempo1 = endTime - startTime;
 
-    cout << endl << "Total numeros primos: " << funcResult1 << " --- Tempo Serial: "<< tempo1 << endl << endl;
+    cout << endl << "Total numeros primos: " << funcResult1 << " --- Tempo: "<< tempo1 << endl << endl;
 
     cout << "----------------------------- Parallel -----------------------------" << endl;
     startTime = omp_get_wtime();
@@ -32,7 +32,7 @@ int main(int argc, char const *argv[]) {
     endTime = omp_get_wtime();
     tempo2 = endTime - startTime;
 
-    cout << endl << "Total numeros primos: " << funcResult2 <<" --- Tempo Paralelo: "<< tempo2 << endl;
+    cout << endl << "Total numeros primos: " << funcResult2 <<" --- Tempo: "<< tempo2 << endl;
 
     return 0;
 }
@@ -69,12 +69,20 @@ int numerosPrimos(int max)
 
 int numerosPrimosParalelo(int max)
 {
+    int NCPU = omp_get_num_procs();
+    int tid;
+    int *numeros = new int[NCPU];
+    int total = 0;
     bool flag = true;
-    int numeros = 0;
 
-    #pragma omp parallel for shared(numeros)
+    for(int i = 0; i < NCPU; i++)
+        numeros[i] = 0;
+
+    #pragma omp parallel for
         for(int i = 1; i < max; i++)
         {
+            tid = omp_get_thread_num();
+
             for(int j = 2; j < i; j++)
             {
                 if(i % j == 0)
@@ -86,7 +94,7 @@ int numerosPrimosParalelo(int max)
 
             if(flag)
             {
-                numeros++;
+                numeros[tid]++;
                 //cout << " " << i;
                 //cout << " . ";
             }
@@ -94,5 +102,8 @@ int numerosPrimosParalelo(int max)
             flag = true;
         }
 
-    return numeros;
+    for(int i = 0; i < NCPU; i++)
+        total += numeros[i];
+
+    return total;
 }
