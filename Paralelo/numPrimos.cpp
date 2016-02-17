@@ -1,4 +1,4 @@
-// icpc -openmp numPrimos.cpp -o  numPrimos.o
+// icpc -openmp -mavx numPrimos.cpp -o  numPrimos.o
 #include <iostream>
 #include <time.h>
 #include <omp.h>
@@ -19,9 +19,9 @@ int main(int argc, char const *argv[]) {
     int funcResult2;
 
     cout << "------------------------------ Serial ------------------------------" << endl;
-    startTime = clock()/CLOCKS_PER_SEC;
+    startTime = (double) clock()/CLOCKS_PER_SEC;
     funcResult1 = numerosPrimos(max);
-    endTime = clock()/CLOCKS_PER_SEC;
+    endTime = (double) clock()/CLOCKS_PER_SEC;
     tempo1 = endTime - startTime;
 
     cout << endl << "Total numeros primos: " << funcResult1 << " --- Tempo: "<< tempo1 << endl << endl;
@@ -56,8 +56,6 @@ int numerosPrimos(int max)
         if(flag)
         {
             numeros++;
-            //cout << " " << i;
-            //cout << " . ";
         }
 
         flag = true;
@@ -97,8 +95,6 @@ int numerosPrimosParalelo(int max, double* startTime, double* endTime)
             if(flag)
             {
                 numeros[tid]++;
-                //cout << " " << i;
-                //cout << " . ";
             }
 
             flag = true;
