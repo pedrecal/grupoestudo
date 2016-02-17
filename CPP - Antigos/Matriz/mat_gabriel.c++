@@ -83,7 +83,6 @@ long matrizJI()
 long vetor()
 {
 	int *vet;
-	int i;
 	int n = 0;
 	long soma = 0;
 	vet = new int [N * N];
@@ -92,11 +91,14 @@ long vetor()
 		cout << "Error" << endl;
 		return -1;
 	}
-	for(i=0;i<N*N;i++)
+        for(int i=0;i<N;i++)
 	{
-		vet[i] = n;
-		soma += vet[i];
-		n++;
+            for(int j = 0; j < N; j++)
+            {
+                vet[i*N+j] = n;
+                n++;
+                soma += vet[i*N+j];
+            }
 	}
 	delete[] vet;
 	return soma;
