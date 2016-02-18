@@ -36,11 +36,11 @@ int main(int argc, char const *argv[]) {
         else if(worstTime < time1)
             worstTime = time1;
         avgTime += time1;
-        cout << "Loop " << i << ": Total of Cousin Numbers: " << funcResult1 << " --- Time: " << time1;
+        cout << "Loop " << i << ": Total of Prime Numbers: " << funcResult1 << " --- Time: " << time1;
     }
 
     cout << "\n\n" << "BestTime: " << bestTime << "\tWorstTime: " << worstTime << "\tAverageTime: " << avgTime/loopTimes << "\n\n";
-
+    
     avgTime = worstTime = bestTime = 0.0;
     cout << "----------------------------- Parallel -----------------------------" << endl;
     for(int i = 0; i < loopTimes; i++)
@@ -54,7 +54,7 @@ int main(int argc, char const *argv[]) {
         else if(worstTime < time2)
             worstTime = time2;
         avgTime += time2;
-        cout << "Loop " << i << ": Total  of Cousin Numbers: " << funcResult2 << " --- Time: " << time2 << "\n";
+        cout << "Loop " << i << ": Total of Prime Numbers: " << funcResult2 << " --- Time: " << time2 << "\n";
     }
 
     cout << "\n" << "BestTime: " << bestTime << "\tWorstTime: " << worstTime << "\tAverageTime: " << avgTime/loopTimes << "\n" << endl;
@@ -69,45 +69,9 @@ int numerosPrimos(int max)
 
     for(int i = 1; i < max; i++)
     {
-        for(int j = 2; j < i; j++)
+
+        if(!(i % 2 == 0))
         {
-            if(i % j == 0)
-            {
-                flag = false;
-                break;
-            }
-        }
-
-        if(flag)
-        {
-            numeros++;
-        }
-
-        flag = true;
-    }
-    cout << endl;
-
-    return numeros;
-}
-
-int numerosPrimosParalelo(int max, double* startTime, double* endTime)
-{
-    int NCPU = omp_get_num_procs();
-    int tid;
-    int *numeros = new int[NCPU];
-    int total = 0;
-    bool flag = true;
-
-    for(int i = 0; i < NCPU; i++)
-        numeros[i] = 0;
-
-    *startTime = omp_get_wtime();
-
-    #pragma omp parallel for
-        for(int i = 1; i < max; i++)
-        {
-            tid = omp_get_thread_num();
-
             for(int j = 2; j < i; j++)
             {
                 if(i % j == 0)
@@ -119,18 +83,44 @@ int numerosPrimosParalelo(int max, double* startTime, double* endTime)
 
             if(flag)
             {
-                numeros[tid]++;
+                numeros++;
             }
 
             flag = true;
         }
+    }
+    cout << endl;
+
+    return numeros;
+}
+
+int numerosPrimosParalelo(int max, double* startTime, double* endTime)
+{
+    int tid;
+    int total = 0;
+    bool flag = true;
+
+    *startTime = omp_get_wtime();
+
+    #pragma omp parallel for reduction(+:total)
+        for(int i = 1; i < max; i++)
+        {
+            for(int j = 2; j < i; j++)
+            {
+                if(i % j == 0)
+                {
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag)
+            {
+                total++;
+            }
+            flag = true;
+        }
 
     *endTime = omp_get_wtime();
-
-    for(int i = 0; i < NCPU; i++)
-        total += numeros[i];
-
-    delete [] numeros;
 
     return total;
 }
