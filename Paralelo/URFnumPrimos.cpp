@@ -1,4 +1,4 @@
-// icpc -openmp -mavx -lm numPrimos.cpp -o  numPrimos.o
+// icpc -openmp -mavx URFnumPrimos.cpp -o  URFnumPrimos.o -lm
 
 #include <iostream>
 #include <time.h>
