@@ -7,10 +7,11 @@ using namespace std;
 
 int numerosPrimos(int);
 
-int numerosPrimosParalelo(int, double*, double*);
+int numerosPrimosParalelo(int, double*, double*, int);
 
-int main(int argc, char const *argv[]) {
-    int max = 1000000;
+int main(int argc, char const *argv[])
+{
+    int max = 0;
     double startTime = 0.0;
     double endTime = 0.0;
     double time1 = 0.0;
@@ -20,7 +21,17 @@ int main(int argc, char const *argv[]) {
     double bestTime = 0.0;
     int funcResult1 = 0;
     int funcResult2 = 0;
-    int loopTimes = 5;
+    int loopTimes = 0;
+    double speedUp = 0.0;
+    double efficiency = 0.0;
+    int numT;
+
+    cout << "Search Prime Numbers until: ";
+    cin >> max;
+    cout << "Number of Loops: ";
+    cin >> loopTimes;
+    cout << "Number of Threads to use: ";
+    cin >> numT;
 
     cout << "------------------------------ Serial ------------------------------";
     for(int i = 0; i < loopTimes; i++)
@@ -40,12 +51,12 @@ int main(int argc, char const *argv[]) {
     }
 
     cout << "\n\n" << "BestTime: " << bestTime << "\tWorstTime: " << worstTime << "\tAverageTime: " << avgTime/loopTimes << "\n\n";
-    
+
     avgTime = worstTime = bestTime = 0.0;
     cout << "----------------------------- Parallel -----------------------------" << endl;
     for(int i = 0; i < loopTimes; i++)
     {
-        funcResult2 = numerosPrimosParalelo(max, &startTime, &endTime);
+        funcResult2 = numerosPrimosParalelo(max, &startTime, &endTime, numT);
         time2 = endTime - startTime;
         if(i == 0)
             worstTime = bestTime = time2;
@@ -56,9 +67,10 @@ int main(int argc, char const *argv[]) {
         avgTime += time2;
         cout << "Loop " << i << ": Total of Prime Numbers: " << funcResult2 << " --- Time: " << time2 << "\n";
     }
-
+    speedUp = time1 / time2;
+    efficiency = speedUp / numT;
     cout << "\n" << "BestTime: " << bestTime << "\tWorstTime: " << worstTime << "\tAverageTime: " << avgTime/loopTimes << "\n" << endl;
-
+    cout << "SpeedUp calc is: " << speedUp << endl << "Efficiency calc is: " << efficiency << endl;
     return 0;
 }
 
@@ -67,50 +79,45 @@ int numerosPrimos(int max)
     bool flag = true;
     int numeros = 0;
 
-    for(int i = 1; i < max; i++)
+    for(int i = 2; i < max; i++)
     {
-
-        if(!(i % 2 == 0))
+        for(int j = 2; j < i - 1; j++)
         {
-            for(int j = 2; j < i; j++)
+            if(i % j == 0)
             {
-                if(i % j == 0)
-                {
-                    flag = false;
-                    break;
-                }
+                flag = false;
+                break;
             }
-
-            if(flag)
-            {
-                numeros++;
-            }
-
-            flag = true;
         }
+        if(flag)
+        {
+            numeros++;
+        }
+        flag = true;
     }
     cout << endl;
 
     return numeros;
 }
 
-int numerosPrimosParalelo(int max, double* startTime, double* endTime)
+int numerosPrimosParalelo(int max, double* startTime, double* endTime, int numT)
 {
     int tid;
     int total = 0;
     bool flag = true;
 
     *startTime = omp_get_wtime();
-
+    omp_set_num_threads(numT);
     #pragma omp parallel for reduction(+:total)
-        for(int i = 1; i < max; i++)
+        for(int i = 2; i < max; i++)
         {
-            for(int j = 2; j < i; j++)
+            //#pragma omp parallel for
+            for(int j = 2; j < i - 1; j++)
             {
                 if(i % j == 0)
                 {
                     flag = false;
-                    break;
+                    j = i - 1;
                 }
             }
             if(flag)

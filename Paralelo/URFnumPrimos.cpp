@@ -1,4 +1,4 @@
-// icpc -openmp -mavx -lm numPrimos.cpp -o  numPrimos.o
+// icpc -openmp -mavx URFnumPrimos.cpp -o  URFnumPrimos.o -lm
 
 #include <iostream>
 #include <time.h>
@@ -7,12 +7,12 @@
 
 using namespace std;
 
-int numerosPrimos(int);
+int primeNumbers(int);
 
-int numerosPrimosParalelo(int, double*, double*);
+int primeNumbersParallel(int, double*, double*, int);
 
 int main(int argc, char const *argv[]) {
-    int max;
+    int max = 0;
     double startTime = 0.0;
     double endTime = 0.0;
     double time1 = 0.0;
@@ -22,19 +22,23 @@ int main(int argc, char const *argv[]) {
     double bestTime = 0.0;
     int funcResult1 = 0;
     int funcResult2 = 0;
-    int loopTimes;
+    int loopTimes = 0;
+    double speedUp = 0.0;
+    int numT = 0;
+    double efficiency = 0.0;
 
     cout << "Search Prime Numbers until: ";
     cin >> max;
     cout << "Number of Loops: ";
     cin >> loopTimes;
-
+    cout << "Number of Threads to use: ";
+    cin >> numT;
 
     cout << "------------------------------ Serial ------------------------------" << endl;
     for(int i = 0; i < loopTimes; i++)
     {
         startTime = (double) clock()/CLOCKS_PER_SEC;
-        funcResult1 = numerosPrimos(max);
+        funcResult1 = primeNumbers(max);
         endTime = (double) clock()/CLOCKS_PER_SEC;
         time1 = endTime - startTime;
         if(i == 0)
@@ -53,7 +57,7 @@ int main(int argc, char const *argv[]) {
     cout << "----------------------------- Parallel -----------------------------" << endl << endl;
     for(int i = 0; i < loopTimes; i++)
     {
-        funcResult2 = numerosPrimosParalelo(max, &startTime, &endTime);
+        funcResult2 = primeNumbersParallel(max, &startTime, &endTime, numT);
         time2 = endTime - startTime;
         if(i == 0)
             worstTime = bestTime = time2;
@@ -65,12 +69,15 @@ int main(int argc, char const *argv[]) {
         cout << "Loop " << i << ": Total of Prime Numbers: " << funcResult2 << " --- Time: " << time2 << "\n";
     }
 
-    cout << "\n" << "BestTime: " << bestTime << "\tWorstTime: " << worstTime << "\tAverageTime: " << avgTime/loopTimes << "\n" << endl;
+    speedUp = time1 / time2;
+    efficiency = speedUp / numT;
 
+    cout << "\n" << "BestTime: " << bestTime << "\tWorstTime: " << worstTime << "\tAverageTime: " << avgTime/loopTimes << "\n" << endl;
+    cout << "SpeedUp calc is: " << speedUp << endl << "Efficiency calc is: " << efficiency << endl;
     return 0;
 }
 
-int numerosPrimos(int max)
+int primeNumbers(int max)
 {
     bool flag = true;
     int total = 1;
@@ -80,15 +87,21 @@ int numerosPrimos(int max)
     {
         max2 = (int) sqrt(i);
 
-        for(int j = 2; j <= max2; j++)
+        if(i % 2 == 0)
         {
-            if(i % j == 0)
+            flag = false;
+        }
+        else
+        {
+            for(int j = 2; j <= max2; j++)
             {
-                flag = false;
-                j=i;
+                if(i % j == 0)
+                {
+                    flag = false;
+                    break;
+                }
             }
         }
-
         if(flag)
         {
             total++;
@@ -103,30 +116,34 @@ int numerosPrimos(int max)
     return total;
 }
 
-int numerosPrimosParalelo(int max, double* startTime, double* endTime)
+int primeNumbersParallel(int max, double* startTime, double* endTime, int numT)
 {
     bool flag = true;
     int total = 1;
     int max2;
 
     *startTime = omp_get_wtime();
-
-    omp_set_nested(1);
-
+    omp_set_num_threads(numT);
     #pragma omp parallel for reduction(+:total) private(max2)
         for(int i = 3; i <= max; i++)
         {
             max2 = (int) sqrt(i);
 
-            for(int j = 2; j <= max2; j++)
+            if(i % 2 == 0)
             {
-                if(i % j == 0)
+                flag = false;
+            }
+            else
+            {
+                for(int j = 2; j <= max2; j++)
                 {
-                    flag = false;
-                    j = i;
+                    if(i % j == 0)
+                    {
+                        flag = false;
+                        j = i;
+                    }
                 }
             }
-
             if(flag)
             {
                 total++;
